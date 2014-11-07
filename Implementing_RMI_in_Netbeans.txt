@@ -1,0 +1,21 @@
+(ini setting yang gw lakukan di netbeans supaya RMI gw jalan)
+1. Buat RemoteClassReference dulu yaitu ClassLibrary berisi package dengan kumpulan Interface.
+2. Build ClassLibrary menjadi .jar (caranya klik kanan di project -> properties -> packaging -> check 'compress jar file' )
+3. Buat ServerJavaApps dan ClientJavaApps
+4. Import library .jar yang tadi dibuat ke ServerJavaApps dan ClientJavaApps (folder library di project klik kanan -> Add jar)
+5. Add new file ke ServerJavaApps dan ClientJavaApps, file bernama:
+	security.policy , isinya:
+		grant{
+		    permission java.security.AllPermission;
+		}; 
+	Enable marshalling & unmarshalling and allow RMI to work
+6. Klik kanan project ServerJavaApps -> Properties -> Run -> lalu masukkan ini ke VM Options:
+	-Djava.security.policy=file:"D:/SmartHouse/smarthouse_server/security.policy" -Djava.rmi.server.codebase=file:"D:/SmartHouse/smarthouse_server/build/classes/smarthouse_server/"
+   yang di dalam tanda "" adalah lokasi tergantung dimana project diletakkan, diatas hanya contoh
+7. Klik kanan project ClientJavaApps -> Properties -> Run -> lalu masukkan ini ke VM Options:
+	-Djava.security.policy=file:"D:/SmartHouse/smarthouse_client/security.policy" -Djava.rmi.server.codebase=file:"D:/SmartHouse/smarthouse_client/build/classes/smarthouse_client"
+	yang di dalam tanda "" adalah lokasi tergantung dimana project diletakkan, diatas hanya contoh
+8. Karena contoh program yang gw bikin client butuh 1 argument yaitu target host untuk connect, maka, di
+	Properties project ClientJavaApps -> Run -> Arguments -> masukkan 127.0.0.1 (ip server process) untuk testing local.
+
+9. Run ServerJavaApps lalu ClientJavaApps
