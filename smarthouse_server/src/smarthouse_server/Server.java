@@ -17,24 +17,37 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
-import smarthouse.interfaces.MathInterface;
+import smarthouse.interfaces.SmartHouseInterface;
 
 public class Server {
+    
     public static void main(String[] argv){
+        Global.Initiate();
+        ServerUI serverUI=new ServerUI();
+        
         try{
             if(System.getSecurityManager()==null){
                 System.setSecurityManager(new SecurityManager());
             }
             
-            Registry registry=LocateRegistry.createRegistry(888);
-            
-            MathInterface MI=new MathImplement();
-            MathInterface stubMI=(MathInterface)UnicastRemoteObject.exportObject(MI,888);
+            Registry registry=LocateRegistry.createRegistry(999);
             
             
-            registry.rebind("MathClass",stubMI);
+            SmartHouseInterface SHI=new SmartHouseImplement();
+            SmartHouseInterface stubSHI=(SmartHouseInterface)UnicastRemoteObject.exportObject(SHI,999);
             
-            System.out.println("Smarthouse server is ready");
+            registry.rebind("SHIClass",stubSHI);
+            
+            System.out.println("Smarthouse server is ready "+Global.currentTime);
+            
+            //Waiting for all client to be READY
+            
+            //END waiting
+            
+            serverUI.setVisible(true);
+            serverUI.Run();
+            HeartBeatServerThread heartbeatServer=new HeartBeatServerThread();
+            heartbeatServer.start();
         }
         catch(Exception ex){
             System.out.println("Smarthouse server failed: ");
