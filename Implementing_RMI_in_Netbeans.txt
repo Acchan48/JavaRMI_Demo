@@ -20,3 +20,5 @@
 
 9. Run ServerJavaApps lalu ClientJavaApps
 10. Untuk close ServerRun harus manual klik x di current running project di netbeansnya
+
+Salam Yudhistira Dewanata, omo tulen :v
